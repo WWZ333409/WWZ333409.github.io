@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -183,7 +184,7 @@
             messages: conversation,
             stream: false,
             temperature: 0.5,
-            max_tokens: 2048,
+            max_tokens: 16000,
           }),
         };
         fetch(
@@ -208,16 +209,25 @@
         document.getElementById("user-input").value = "";
       }
       function typeWriter(text, sender) {
-        var chatBox = document.getElementById("chat-box");
-        var messageDiv = document.createElement("div");
-        messageDiv.className = sender;
-        var typingSpan = document.createElement("span");
-        typingSpan.className = "typing";
-        typingSpan.innerHTML = text;
-        messageDiv.appendChild(typingSpan);
-        chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
+    var chatBox = document.getElementById("chat-box");
+    var messageDiv = document.createElement("div");
+    messageDiv.className = sender;
+    var typingSpan = document.createElement("span");
+    typingSpan.className = "typing";
+    messageDiv.appendChild(typingSpan);
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    var index = 0;
+    var typingInterval = setInterval(function () {
+        typingSpan.innerHTML += text[index];
+        index++;
+        if (index === text.length) {
+            clearInterval(typingInterval);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }, 50); // 根据需要调整间隔
+}
       function appendMessage(sender, message) {
         var chatBox = document.getElementById("chat-box");
         var messageDiv = document.createElement("div");
