@@ -1,316 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
-    <title>WWZ-AI</title>
-    <link rel="icon" type="image/png" href="https://tse4.mm.bing.net/th/id/OIG1.TMVfxrxHZbcSnbCWqVKD?w=270&h=270&c=6&r=0&o=5&pid=ImgGn"> <!-- 添加这行用于 favicon -->
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WWZ-Music</title>
+    <link rel="icon" type="image/png" href="https://tse3.mm.bing.net/th/id/OIG1.eXlgdRakg4U9cEfyydgb?pid=ImgGn">
     <style>
-       * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #121212;
-        color: #fff;
-      }
-      .topbar {
-        width: 100%;
-        min-width: 600px;
-        height: 60px;
-        background: linear-gradient(90deg, #00bfff, #00ff00);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-      }
-      .chatbox {
-        width: 100%;
-        height: 360px;
-        margin: 20px auto;
-        background-color: #222;
-        border-radius: 15px;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        overflow: hidden;
-      }
-      .chat {
-        width: 100%;
-        height: 300px;
-        padding: 20px;
-        overflow: auto;
-      }
-      hr {
-        height: 1px;
-        border: none;
-        background: linear-gradient(90deg, #00ced1, #4682b4);
-      }
-      .chatbox button {
-        width: 40px;
-        height: 40px;
-        position: relative;
-        margin: 9px 9px 9px calc(100% - 49px);
-        background: linear-gradient(90deg, #9932cc, #9370db);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      button svg {
-        margin: 10px;
-      }
-      .button:hover {
-        background: linear-gradient(90deg, #9370db, #9932cc);
-      }
-      .input-container {
-        width: 100%;
-        margin: 20px auto;
-        border-radius: 15px;
-        background: linear-gradient(90deg, #87ceeb, #00bfff);
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        display: flex;
-        flex-direction: column; 
-      }
-      .input-container label {
-        padding: 10px;
-        font-weight: bold;
-      }
-      .input-container textarea {
-        width: calc(100% - 40px);
-        height: 100px;
-        border-radius: 15px;
-        padding: 20px;
-        font-weight: 800;
-        outline: none;
-        border: none;
-        resize: none;
-        background-color: #222;
-        color: #fff;
-        margin-bottom: 10px; 
-      }
-      .lastbox {
-        width: 100%;
-        height: 56px;
-        display: flex;
-        align-items: center;
-      }
-      .model-container {
-        position: relative;
-        margin: auto 9px auto auto;
-        overflow: hidden;
-      }
-      .model-selector {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        font-size: 16px;
-        font-weight: bold;
-        color: #fff;
-        opacity: 0;
-        transform: scale(0);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-      }
-      select {
-        width: 200px;
-        height: 40px;
-        padding: 0 10px;
-        border-radius: 15px;
-        border: 1px solid #006400;
-        outline: none;
-        font-size: 14px;
-        background-color: #1a1a1a;
-        color: #fff;
-        appearance: none;
-        cursor: pointer;
-      }
-      .input-container button {
-        width: 40px;
-        height: 40px;
-        position: relative;
-        margin: auto 9px auto auto;
-        background: linear-gradient(90deg, #87ceeb, #00bfff);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      .button:hover {
-        background: linear-gradient(90deg, #00bfff, #87ceeb);
-      }
-    </style>
-    <div class="topbar">
-      <h1>WWZ-AI</h1>
-    </div>
-    <div class="chatbox">
-      <div class="chat" id="chat-box"></div>
-      <hr />
-      <button onclick="clearConversation()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"
-          />
-        </svg>
-      </button>
-    </div>
-    <div class="input-container">
-      <textarea
-        type="text"
-        id="user-input"
-        placeholder="请在这里输入"
-      ></textarea>
-      <hr />
-      <div class="lastbox">
-        <div class="model-container">
-          <select id="model-selector" onchange="changeModel()">
-            <option value="gpt-4">GPT-4-Turbo-Preview</option>
-            <option value="gpt-4">GPT-4-Turbo-128k</option>
-            <option value="gpt-4">GPT-4-0125-Preview</option>
-          </select>
-        </div>
-        <button onclick="sendMessage()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
-<script>
-      var conversation = [
-        { role: "system", content: "You are a helpful assistant." },
-      ];
-      var selectedModel = "gpt-4";
-      function sendMessage() {
-        var userInput = document.getElementById("user-input").value;
-        appendMessage("您", userInput);
-        showThinkingMessage(); // Show the "AI正在思考中" message
-        conversation.push({
-          role: "user",
-          content: userInput,
-        });
-        var model = selectedModel;
-        var requestOptions = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer nk-2311676378",
-          },
-          body: JSON.stringify({
-            model: model,
-            messages: conversation,
-            stream: false,
-            temperature: 0.5,
-            max_tokens: 16000,
-          }),
-        };
-        fetch(
-          "https://chat.flss.world/api/openai/v1/chat/completions",
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            hideThinkingMessage(); // Hide the "AI正在思考中" message
-            var botResponse = data.choices[0].message.content;
-            setTimeout(function () {
-              typeWriter("AI：" + botResponse, "bot");
-              conversation.push({
-                role: "assistant",
-                content: botResponse,
-              });
-            }, 500); // Set the delay to 0.5 seconds
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            appendErrorMessage("出现错误：" + error);
-          });
-        document.getElementById("user-input").value = "";
-      }
-      function showThinkingMessage() {
-        var chatBox = document.getElementById("chat-box");
-        var messageDiv = document.createElement("div");
-        messageDiv.className = "bot";
-        var thinkingSpan = document.createElement("span");
-        thinkingSpan.className = "typing";
-        thinkingSpan.innerHTML = "AI正在思考中...";
-        messageDiv.appendChild(thinkingSpan);
-        chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-      function hideThinkingMessage() {
-        var chatBox = document.getElementById("chat-box");
-        var lastMessage = chatBox.lastChild;
-        if (lastMessage && lastMessage.classList.contains("bot")) {
-          chatBox.removeChild(lastMessage);
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
-      }
-      function typeWriter(text, sender) {
-        var chatBox = document.getElementById("chat-box");
-        var messageDiv = document.createElement("div");
-        messageDiv.className = sender;
-        var typingSpan = document.createElement("span");
-        typingSpan.className = "typing";
-        messageDiv.appendChild(typingSpan);
-        chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        var index = 0;
-        var typingInterval = setInterval(function () {
-          typingSpan.innerHTML += text[index];
-          index++;
-          if (index === text.length) {
-            clearInterval(typingInterval);
-            chatBox.scrollTop = chatBox.scrollHeight;
-          }
-        }, 50);
-      }
-      function appendMessage(sender, message) {
-        var chatBox = document.getElementById("chat-box");
-        var messageDiv = document.createElement("div");
-        messageDiv.className = sender;
-        messageDiv.innerHTML = "<strong>" + sender + ":</strong> " + message;
-        chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-      function appendErrorMessage(message) {
-        var chatBox = document.getElementById("chat-box");
-        var errorDiv = document.createElement("div");
-        errorDiv.className = "error";
-        errorDiv.innerHTML = "<strong>Error:</strong> " + message;
-        chatBox.appendChild(errorDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-      function changeModel() {
-        clearConversation();
-        selectedModel = document.getElementById("model-selector").value;
-      }
-      function clearConversation() {
-        conversation = [];
-        document.getElementById("chat-box").innerHTML = "";
-      }
-      document
-        .getElementById("user-input")
-        .addEventListener("keydown", function (event) {
-          if (event.key === "Enter") {
-            event.preventDefault();
-            sendMessage();
-          }
-        });
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        .product {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+            margin: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        .product h2 {
+            margin-bottom: 10px;
+        }
+        .product button {
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .product button:hover {
+            background-color: #0056B3;
+        }
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        .modal h3 {
+            margin-top: 0;
+        }
+        .modal button {
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal button:hover {
+            background-color: #0056B3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="product-container">
+        <div class="product">
+            <img src="https://p1.music.126.net/u_1EudmF8Swgow6vfgYe1g==/8896148580676276.jpg?param=130y130" alt="歌曲">
+            <h2>喜欢你</h2>
+            <button onclick="showConfirmation('https://m801.music.126.net/20240324125413/6d416ecb402572b460b248282c661119/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/28481668510/d116/c170/166e/bf67479a78349937c6484008ee9b2799.mp3')">聆听</button>
+        </div>
+        <div class="product">
+            <img src="https://p2.music.126.net/O_P630bpI1XNYNwtHtjagA==/109951164513395213.jpg?param=130y130" alt="歌曲">
+            <h2>世间美好与你环环相扣</h2>
+            <button onclick="showConfirmation('https://m10.music.126.net/20240324125814/d3ecd7d7b0c65bba517548a2ccc531ef/ymusic/530e/5652/0653/dd46283ebea8292c58ea192c17f42c3c.mp3')">聆听</button>
+        </div>
+        <div class="product">
+            <img src="https://p2.music.126.net/RdfYupOorgau41WXG-KgyA==/109951166137763323.jpg?param=130y130" alt="歌曲">
+            <h2>勇气</h2>
+            <button onclick="showConfirmation('https://m701.music.126.net/20240324130043/3ee99f0d12715a71f22800ffbdd29b1f/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/14096513378/e486/dda7/9d14/6477749cd702c0b9d0debadb75ced6dd.mp3')">聆听</button>
+        </div>
+        <div class="product">
+            <img src="https://p2.music.126.net/BBf_UaRbUgUNNqmS_CDb5w==/109951165782330680.jpg?param=130y130" alt="歌曲">
+            <h2>转动命运之轮（柯南）</h2>
+            <button onclick="showConfirmation('https://m801.music.126.net/20240324130244/a1ac11d3fecfe380235977a825f3f9a4/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7768499379/0f32/855e/37b2/ccff73753251143a49a7a6407fe84b6c.mp3')">聆听</button>
+        </div>
+        <div class="product">
+            <img src="https://p2.music.126.net/hClw_8dZJ1fq5L3SKI_oaA==/109951168111262960.jpg?param=130y130" alt="歌曲">
+            <h2>不潮不用花钱（林俊杰）</h2>
+            <button onclick="showConfirmation('https://lx-sycdn.kuwo.cn/25c5555af7943e4c37fb814337dc454b/65ff9df0/resource/n3/59/47/3133851864.mp3?from=vip')">聆听</button>
+        </div>
+        <div class="product">
+            <img src="https://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130" alt="歌曲">
+            <h2>句号（邓紫棋）</h2>
+            <button onclick="showConfirmation('https://lw-sycdn.kuwo.cn/65698d41af272053dd0c521cd1c3018a/65ffae84/resource/30106/trackmedia/M500004HtbeG1hrKLv.mp3?from=vip')">聆听</button>
+        </div>
+        <div class="product">
+            <img src="https://p2.music.126.net/Rwoi5VOT68hL7YYcQsJyRw==/109951168252072836.jpg?param=130y130" alt="歌曲">
+            <h2>紫荆花盛开</h2>
+            <button onclick="showConfirmation('https://m801.music.126.net/20240324132815/d4b2a643053216b7e6f98175002f3bd5/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/24197566675/14c1/7067/dca3/1bfdd88adce96c8ea3179b4ad6b41bcd.mp3')">聆听</button>
+        </div>
+        <div class="product">
+            <img src="https://p1.music.126.net/NlvIqQpQHQWThB1PqZfvcQ==/109951168072051623.jpg?param=130y130" alt="歌曲">
+            <h2>Baby I'm Sorry (Japanese ver)</h2>
+            <button onclick="showConfirmation('https://m701.music.126.net/20240324133055/5e0d2ad5f33900b23ab817db42222742/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/22271470410/fd2b/53f7/f274/eb95a90ba7c513810d694d548b924a29.mp3')">聆听</button>
+        </div>
+    </div>
+    <div class="modal" id="confirmation-modal" style="display: none;">
+        <h3>警告</h3>
+        <p>本站资源均由网络收集，本站所有者（Wu Wang Ze）不对其负任何法律责任！望周知！</p>
+        <button onclick="closeModal()">我已阅读</button>
+    </div>
+    <script>
+        function showConfirmation(url) {
+            let modal = document.getElementById('confirmation-modal');
+            modal.style.display = 'block';
+            modal.onclick = function (event) {
+                event.stopPropagation();
+            };
+            document.body.style.overflow = 'hidden';
+
+            let closeButton = modal.querySelector('button');
+            closeButton.onclick = function () {
+                closeModal();
+                window.location.href = url;
+            };
+        }
+        function closeModal() {
+            let modal = document.getElementById('confirmation-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        function appendProducts() {
+            let container = document.getElementById('product-container');
+            let products = container.innerHTML;
+            container.innerHTML += products;
+        }
+        function showSecretWindow() {
+            let secretModal = document.createElement('div');
+            secretModal.classList.add('modal', 'shake');
+            secretModal.innerHTML = `
+                <h3>拳打QQ音乐  脚踢酷狗音乐</h3>
+                <p>全网最全无损音库</p>
+                <button onclick="closeSecretModal()">我认为此站为全球最强音乐网站</button>
+            `;
+            document.body.appendChild(secretModal);
+        }
+        function closeSecretModal() {
+            let secretModal = document.querySelector('.shake');
+            secretModal.remove();
+        }
+        window.onscroll = function () {
+            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            let windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+            if (scrollTop + windowHeight >= scrollHeight) {
+                appendProducts();
+            }
+        };
+        // Call the activation function
+        showSecretWindow();
     </script>
-  </body>
+</body>
 </html>
